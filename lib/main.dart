@@ -1,40 +1,37 @@
 import 'dart:async';
-import 'dart:math';
+// import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iling_adzan/alarm_manager.dart';
+import 'package:iling_adzan/bloc/tanggal_bloc.dart';
+import 'package:iling_adzan/views/tanggal.dart';
+import 'package:intl/intl.dart';
 
 import 'views/jam.dart';
 import 'views/jadwal_sholat.dart';
+import 'views/geolocator.dart';
+
+import 'views/tanggal.dart';
 
 import 'package:iling_adzan/audio_player.dart';
-// import 'package:iling_adzan/alarm_manager.dart';
 
 import 'package:audio_service/audio_service.dart';
-// import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 1), (Timer timer) => setState(() {}));
-    AndroidAlarmManager.initialize();
-  }
+class MyApp extends StatelessWidget {
+  String today = DateFormat('EEE, dd MM yyyy').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home: AudioServiceWidget(
+      home: BlocProvider(
+        create: (context) => TanggalBloc(today),
         child: Scaffold(
           body: Stack(children: <Widget>[
             Container(
@@ -46,7 +43,14 @@ class _MyAppState extends State<MyApp> {
             ),
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[Jam(), Jadwal(), Audio(), Alarm()])
+                children: <Widget>[
+                  Jam(),
+                  Tanggal(),
+                  Jadwal(),
+                  Location(),
+                  Audio(),
+                  Alarm()
+                ])
           ]),
         ),
       ),
