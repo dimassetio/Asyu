@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Tanggal extends StatelessWidget {
-  final homeC = Get.put(HomeController());
+  final homeC = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Obx(() => Row(

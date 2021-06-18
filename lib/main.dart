@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import './Home/HomePage.dart';
 
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Asyu',
-      theme: ThemeData(
+      theme:
+          // ThemeData.dark(),
+          ThemeData(
         primarySwatch: Colors.green,
       ),
       home: HomePage(),

@@ -12,32 +12,45 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      colors: [Colors.green, Colors.lightGreen],
-                      end: Alignment.bottomCenter),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(25),
-                      bottomRight: Radius.circular(25))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Jam(),
-                  Tanggal(),
-                ],
-              ),
+      body: Stack(children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg-masjid.png"),
+              fit: BoxFit.cover,
+              colorFilter: new ColorFilter.mode(
+                  Colors.white.withOpacity(0.4), BlendMode.dstATop),
             ),
-            Jadwal(),
-            Locator()
-          ],
+          ),
+          child: null /* add child content here */,
         ),
-      ),
+        Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        colors: [Colors.green, Colors.lightGreen],
+                        end: Alignment.bottomCenter),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Jam(),
+                    Tanggal(),
+                  ],
+                ),
+              ),
+              Jadwal(),
+              Locator(),
+            ],
+          ),
+        ),
+      ]),
     );
   }
 }

@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'dart:collection';
 import 'dart:math' as math;
 import 'dart:core';
@@ -117,6 +118,7 @@ class PrayerTime {
     // ------------------- Calc Method Parameters --------------------
 
     // Tuning offsets {fajr, sunrise, dhuhr, asr, sunset, maghrib, isha}
+
     _offsets = new List<int>(7);
     _offsets[0] = 0;
     _offsets[1] = 0;

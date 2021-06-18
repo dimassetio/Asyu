@@ -1,14 +1,20 @@
 import 'dart:async';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+
 import '../models/jam_model.dart';
 import '../models/tanggal_model.dart';
 import '../models/locator_model.dart';
 import '../models/prayer_time.dart';
 import '../models/jadwal_model.dart';
+import '../models/notification_model.dart';
 
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class HomeController extends GetxController {
   var jam = JamModel();
@@ -26,8 +32,11 @@ class HomeController extends GetxController {
       },
     );
     getLocation().then((value) => getPrayerTimes());
+    notifSetting();
+    tz.initializeTimeZones();
   }
 
+// Tanggal
   nextDay() async {
     tanggal.currentDate = tanggal.currentDate.add(Duration(days: 1));
     return tanggal.formatted.value =
@@ -46,6 +55,7 @@ class HomeController extends GetxController {
         tanggal.formatDate.format(tanggal.currentDate);
   }
 
+//Locator
   getLocation() async {
     try {
       var position = await Geolocator.getCurrentPosition(
@@ -67,6 +77,7 @@ class HomeController extends GetxController {
     }
   }
 
+//Jadwal
   getPrayerTimes() {
     try {
       PrayerTime prayers = new PrayerTime();
@@ -101,4 +112,35 @@ class HomeController extends GetxController {
       print(e);
     }
   }
+}
+
+//Notif
+void notifSetting() async {
+  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+
+  var initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+  flutterNotifications.initialize(initializationSettings);
+}
+
+parseDate(String hour) {
+  var cDate = DateFormat('yyyyMMdd').format(DateTime.now());
+  var schedule = DateTime.parse("${cDate} $hour:00");
+  tz.TZDateTime.from(schedule, tz.local);
+}
+
+Future<void> launchNotif(int id, String title, String hour) async {
+  var cDate = DateFormat('yyyyMMdd').format(DateTime.now());
+  var schedule = DateTime.parse("${cDate} $hour:00");
+  var scheduled = tz.TZDateTime.from(schedule, tz.local);
+  flutterNotifications.zonedSchedule(
+      id, //id,
+      title, //title
+      'Sudah Waktunya Adzan $title',
+      scheduled,
+      // tz.TZDateTime.now(tz.local).add(Duration(seconds: 3)), //scheduledDate,
+      notificationDetails,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true);
 }
